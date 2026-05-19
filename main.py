@@ -8,15 +8,11 @@ import os
 
 load_dotenv()
 
-token = os.getenv("BOT_TOKEN")
-
-if token is None:
-    raise ValueError("BOT_TOKEN not found")
-
 bot = Bot(
-    token=token,
+    token=os.getenv("BOT_TOKEN"),
     default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
+
 
 dp = Dispatcher()
 
