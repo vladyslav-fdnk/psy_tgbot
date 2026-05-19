@@ -3,6 +3,9 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from dotenv import load_dotenv
 
+from app.handlers.start_bot import router as start_router
+from app.handlers.booking import router as booking_router
+
 import asyncio
 import os
 
@@ -15,6 +18,9 @@ bot = Bot(
 
 
 dp = Dispatcher()
+
+dp.include_router(start_router)
+dp.include_router(booking_router)
 
 
 async def main():

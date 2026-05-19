@@ -4,8 +4,13 @@ version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
     "aiogram>=3.28.2",
+    "aiogram-calendar>=0.6.0",
     "alembic>=1.18.4",
     "asyncpg>=0.31.0",
+    "bandit>=1.9.4",
+    "mypy>=2.1.0",
+    "pre-commit>=4.6.0",
     "python-dotenv>=1.2.2",
+    "ruff>=0.15.13",
     "sqlalchemy>=2.0.49",
 ]
