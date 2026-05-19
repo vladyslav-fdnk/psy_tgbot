@@ -9,7 +9,6 @@ main_menu = ReplyKeyboardMarkup(
         [KeyboardButton(text="📚 Материалы")],
         [KeyboardButton(text="💳 Оплата")],
         [KeyboardButton(text="ℹ️ О специалисте")],
-
     ],
-    resize_keyboard=True
+    resize_keyboard=True,
 )
