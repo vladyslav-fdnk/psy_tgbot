@@ -22,11 +22,12 @@ def init_db() -> None:
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS bookings (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
-                username TEXT,
+                client_id INTEGER,
+                service TEXT,
                 date TEXT,
-                time TEXT
-            )
+                time TEXT,
+                status TEXT
+)
         """)
 
         cursor.execute("""
@@ -46,16 +47,18 @@ def init_db() -> None:
         conn.commit()
 
 
-def add_booking(user_id: int, username: str, date: str, time: str) -> None:
+def add_booking(
+    client_id: int, service: str, date: str, time: str, status="pending"
+) -> None:
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
 
         cursor.execute(
             """
-            INSERT INTO bookings (user_id, username, date, time)
-            VALUES (?, ?, ?, ?)
-        """,
-            (user_id, username, date, time),
+            INSERT INTO bookings (client_id, service, date, time, status)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (client_id, service, date, time, status),
         )
 
         conn.commit()
@@ -99,3 +102,47 @@ def save_client(data: ClientData) -> None:
         )
 
         conn.commit()
+
+
+def get_client_id(user_id: int) -> int | None:
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT id FROM clients WHERE user_id = ?", (user_id,))
+
+        result = cursor.fetchone()
+
+        if result:
+            return result[0]
+
+        return None
+
+
+def approve_booking_in_db(booking_id: int):
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+        UPDATE bookings
+        SET status = 'approved'
+        WHERE id = ?
+        """,
+            (booking_id,),
+        )
+    conn.commit()
+
+
+def reject_booking_in_db(booking_id: int):
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        UPDATE bookings
+        SET status = 'rejected'
+        WHERE id = ?
+        """,
+        (booking_id,),
+    )
+    conn.commit()

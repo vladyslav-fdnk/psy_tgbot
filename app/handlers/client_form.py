@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 
@@ -18,11 +18,16 @@ class ClientForm(StatesGroup):
     contact = State()
 
 
-@router.message(F.text == "/start_form")
-async def start_form(message: Message, state: FSMContext):
+@router.callback_query(F.data == "fill_form")
+async def fill_form(callback: CallbackQuery, state: FSMContext):
     await state.clear()
 
-    await message.answer("Как вас зовут?")
+    if not callback.message:
+        return
+
+    await callback.answer()
+
+    await callback.message.answer("Как вас зовут?")
     await state.set_state(ClientForm.name)
 
 
